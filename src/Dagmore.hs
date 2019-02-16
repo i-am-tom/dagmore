@@ -93,6 +93,7 @@ lookup
 find :: forall f h a. Typeable (f a) => Bag -> Witness h a -> f a
 find bag _
   = fromJust (lookup {- @(f a) -} bag)
+{-# INLINE find #-}
 
 -- | A Dagmore computation exists within a bag-filled state transformer. This
 -- means that, unbeknownst to our users, we're carrying a map full of values
@@ -241,7 +242,7 @@ evaluate dagmore
 --
 -- The class generalises this form to n-ary tuples, just as 'using' does. This
 -- hopefully makes it much neater to combine witnesses.
-class Sequence f h input output | input -> output where
+class Sequence h f input output | input -> output where
 
   -- | Take a tuple of witnesses, and turn it into a witness of a tuple, using
   -- some user-supplied "zipping" function.
@@ -253,10 +254,10 @@ class Sequence f h input output | input -> output where
     -> input
     -> DagmoreT h f m (Witness h output)
 
-instance Applicative f => Sequence f h () () where
+instance Applicative f => Sequence h f () () where
   combineWith _ = flip using pure
 
-instance Typeable one => Sequence f h (Witness h one) one where
+instance Typeable one => Sequence h f (Witness h one) one where
   combineWith _ = flip using id
 
 $(Sequence.instances)
@@ -266,7 +267,7 @@ $(Sequence.instances)
 combine
   :: ( Applicative f
      , Typeable f
-     , Sequence f h input output
+     , Sequence h f input output
      , Monad m
      )
   => input

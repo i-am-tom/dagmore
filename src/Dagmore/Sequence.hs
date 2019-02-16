@@ -53,8 +53,8 @@ instances = do
     let names = head :| take size tail
 
         choice = ConT (mkName "Sequence")
-          `AppT` VarT (mkName "f")
           `AppT` region
+          `AppT` VarT (mkName "f")
           `AppT` witnesses names
           `AppT` output names
 

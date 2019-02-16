@@ -104,7 +104,7 @@ fakeNetwork value = DM.persist do
 -- | Compute something using a bunch of witnesses whose computations are
 -- concurrently executed.
 usingC
-  :: (Sequence IO h witnesses input, Typeable input, Typeable result)
+  :: (Sequence h IO witnesses input, Typeable input, Typeable result)
   => witnesses -> (input -> result) -> DAG h result
 usingC witnesses k = do
   aggregate <- DM.combineWith concurrently witnesses
