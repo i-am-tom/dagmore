@@ -254,11 +254,15 @@ class Sequence h f input output | input -> output where
     -> input
     -> DagmoreT h f m (Witness h output)
 
+-- | Sequencing an empty tuple is easy!
 instance Applicative f => Sequence h f () () where
   combineWith _ = flip using pure
 
+-- | Sequencing a single item is also quite straightforward.
 instance Typeable one => Sequence h f (Witness h one) one where
   combineWith _ = flip using id
+
+-- Back at it again with the @TemplateHaskell@...
 
 $(Sequence.instances)
 
