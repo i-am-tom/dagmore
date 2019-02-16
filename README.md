@@ -5,7 +5,7 @@
 Dagmore is a DSL for constructing heterogenous computations representable as
 [DAGs](https://en.wikipedia.org/wiki/Directed_acyclic_graph). It bears a _lot_
 of similarity to [Dagless](https://github.com/i-am-tom/dagless), its spiritual
-older brother, bug uses rank-2 polymorphism to provide similar guarantees
+older brother, but uses rank-2 polymorphism to provide similar guarantees
 _without the compile-time overhead_ or `IxMonad`/`do-notation` trickery!
 
 ---
