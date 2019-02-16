@@ -10,13 +10,12 @@
 -- function to dictate how we traverse the tuple.
 module Dagmore.Sequence where
 
-import           Dagmore.TH
-import qualified Dagmore.Using       as Using
-import           Language.Haskell.TH hiding (match)
-import           Data.Foldable       (foldl', foldr1)
-import           Data.Functor        ((<&>))
-import           Data.List.NonEmpty  (NonEmpty (..))
-import           Prelude             hiding (head, sequence, tail)
+import Dagmore.TH
+import Language.Haskell.TH hiding (match)
+import Data.Foldable       (foldl', foldr1)
+import Data.Functor        ((<&>))
+import Data.List.NonEmpty  (NonEmpty (..))
+import Prelude             hiding (head, sequence, tail)
 
 -- | Create the expression for the 'Dagless.combineWith' implementation.
 sequence :: NonEmpty Name -> Exp
@@ -63,12 +62,7 @@ instances = do
           `AppE` VarE (mkName "xs")
           `AppE` LamE [ inputP names ] (sequence names)
 
-        constraints
-          = functor
-          : Using.instanceHead names
-          : foldMap (pure . typeable) names
-
-    InstanceD Nothing constraints choice
+    InstanceD Nothing (functor : foldMap (pure . typeable) names) choice
       [ FunD (mkName "combineWith")
           [ Clause [ VarP (mkName "f"), VarP (mkName "xs") ] (NormalB body) []
           ]

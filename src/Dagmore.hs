@@ -4,7 +4,6 @@
 {-# LANGUAGE FunctionalDependencies     #-}
 {-# LANGUAGE GeneralisedNewtypeDeriving #-}
 {-# LANGUAGE KindSignatures             #-}
-{-# LANGUAGE MonoLocalBinds             #-}
 {-# LANGUAGE RankNTypes                 #-}
 {-# LANGUAGE ScopedTypeVariables        #-}
 {-# LANGUAGE TemplateHaskell            #-}
@@ -30,10 +29,10 @@ module Dagmore
   ( Witness
   , DagmoreT
 
-  , Using (..)
+  , Sequence (..)
+  , Using    (..)
 
   , combine
-  , combineWith
   , evaluate
   , persist
   , using
