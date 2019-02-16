@@ -15,9 +15,9 @@ directory for fully-worked examples!
 
 ```haskell
 main = run do
-  acceleration <- register @Acceleration
-  mass         <- register @Mass
-  displacement <- register @Displacement
+  acceleration <- fetch @Acceleration
+  mass         <- fetch @Mass
+  displacement <- fetch @Displacement
 
   force <- using (mass, acceleration) $ \(m, a) -> do
     Mass         m' <- m
