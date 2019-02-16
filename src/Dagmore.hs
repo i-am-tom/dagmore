@@ -1,3 +1,4 @@
+{-# LANGUAGE BlockArguments             #-}
 {-# LANGUAGE FlexibleContexts           #-}
 {-# LANGUAGE FlexibleInstances          #-}
 {-# LANGUAGE FunctionalDependencies     #-}
@@ -28,10 +29,6 @@
 module Dagmore
   ( Witness
   , DagmoreT
-
-  , Bag
-  , insert
-  , lookup
 
   , Using (..)
 
@@ -70,7 +67,7 @@ import           Type.Reflection           (SomeTypeRep, someTypeRep)
 -- hence use 'fromJust' without fear.
 newtype Bag
   = Bag { debag :: Map SomeTypeRep Dynamic }
-  deriving (Semigroup, Monoid)
+  deriving (Semigroup, Monoid, Show)
 
 -- | We can insert any item into the 'Bag' as long as it has a known 'Typeable'
 -- instance (allowing us to find the "fingerprint" for our type).
@@ -96,7 +93,7 @@ lookup
 -- indirectly) unless ithe value /definitely exists in the bag/.
 find :: forall f h a. Typeable (f a) => Bag -> Witness h a -> f a
 find bag _
-  = fromJust (lookup {- @a (if you like being explicit) -} bag)
+  = fromJust (lookup {- @(f a) -} bag)
 
 -- | A Dagmore computation exists within a bag-filled state transformer. This
 -- means that, unbeknownst to our users, we're carrying a map full of values
@@ -224,11 +221,11 @@ evaluate
   -> m (f output)
 
 evaluate dagmore
-  = evalStateT (runDagmoreT extracted) mempty
-  where
-    extracted
-      = DagmoreT get >>= \bag ->
-          fmap (find bag) dagmore
+  = flip evalStateT mempty do
+      witness <- runDagmoreT dagmore
+      bag     <- get
+
+      pure (find bag witness)
 
 -- | 'evaluate' is a nice interface, but it limits us to single witnesses as a
 -- return value. This isn't a problem, though, as we can sneak round the

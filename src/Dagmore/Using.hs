@@ -27,7 +27,8 @@ constraints (head :| tail)
 
 -- | The instance head for a given set of names' instances!
 instanceHead :: NonEmpty Name -> Type
-instanceHead names = ConT (mkName "Using")
+instanceHead names
+  = ConT (mkName "Using")
       `AppT` region
       `AppT` VarT (mkName "f")
       `AppT` witnesses names
