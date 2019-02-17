@@ -35,7 +35,7 @@ import Type.Reflection        (Typeable)
 --
 -- We then validate each of them as separate pieces of information. Before
 -- returning a validated object, however, we have a condition: every user over
--- the age of 16 must enter a surname. To do this, we requice that everything
+-- the age of 16 must enter a surname. To do this, we require that everything
 -- so far was validated successfully. If this be the case, we perform that age
 -- check. If not, we collect all the errors from the component parts.
 main :: (String, String, String) -> Validation [String] User
