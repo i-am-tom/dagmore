@@ -25,8 +25,6 @@ main = run do
 
     pure (Force (m' * a'))
 
-  displacement <- fetch @Displacement
-
   using (force, displacement) $ \(f, d) -> do
     Force        f' <- f
     Displacement d' <- d
